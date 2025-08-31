@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\UserController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -8,4 +9,5 @@ use Inertia\Inertia;
 Route::middleware(['auth', 'verified', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/', fn () => Inertia::render('admin/index'))->name('index');
     Route::resource('users', UserController::class);
+    Route::resource('categories', CategoryController::class);
 });

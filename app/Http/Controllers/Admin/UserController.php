@@ -2,15 +2,13 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
-use App\Http\Requests\Settings\ProfileUpdateRequest;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Inertia\Inertia;
-use Inertia\Response;
 use App\Models\User;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\User\StoreUserRequest;
+use App\Http\Requests\Admin\User\UpdateUserRequest;
+
+use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class UserController extends Controller
 {
@@ -36,9 +34,11 @@ class UserController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreUserRequest $request)
     {
-        //
+        User::create($request->validated());
+
+        return redirect()->route('admin.users.index');
     }
 
     /**
@@ -60,9 +60,17 @@ class UserController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, User $user)
+    public function update(UpdateUserRequest $request, $id)
     {
-        //
+        $validatedData = $request->validated();
+        
+        // Remove password from data if it's empty/null to keep existing password
+        if (empty($validatedData['password'])) {
+            unset($validatedData['password']);
+        }
+        
+        User::find($id)->update($validatedData);
+        return redirect()->route('admin.users.index');
     }
 
     /**
@@ -70,6 +78,7 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
-        //
+        $user->delete();
+        return redirect()->route('admin.users.index');
     }
 }
