@@ -35,7 +35,7 @@ const breadcrumbs: BreadcrumbItem[] = [
 ];
 import ConfirmDialog from '@/components/ui/confirm-dialog';
 
-export default function Index({ users }: { users: User[] }) {
+export default function Index({ users, roles }: { users: User[], roles: any[] }) {
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [userToDelete, setUserToDelete] = useState<User | null>(null);
 
@@ -75,6 +75,7 @@ export default function Index({ users }: { users: User[] }) {
                   <Heading title="Users List" description="All Users listed you can do multiple actions and view states" />
                   <UserDialog
                     trigger={<Button variant="outline">Add User</Button>}
+                    roles={roles}
                   />
               </div>
                 <div className="grid auto-rows-min gap-4 md:grid-cols-3">
@@ -128,13 +129,30 @@ export default function Index({ users }: { users: User[] }) {
                               {user.email_verified_at ? 'Verified' : "Not Verified"}
                             </Badge>
                           </TableCell>
-                          <TableCell>{user.role}</TableCell>
+                          <TableCell>
+                            <div className="flex flex-wrap gap-1">
+                              {user.roles && user.roles.length > 0 ? (
+                                user.roles.map((role) => (
+                                  <Badge
+                                    key={role.id}
+                                    variant="outline"
+                                    className="text-xs"
+                                  >
+                                    {role.name}
+                                  </Badge>
+                                ))
+                              ) : (
+                                <span className="text-sm text-muted-foreground">No roles</span>
+                              )}
+                            </div>
+                          </TableCell>
                           <TableCell>
                           <div className='flex items-center space-x-2'>
                             <UserDialog
                               trigger={<Button variant="ghost" size="sm">Edit</Button>}
                               user={user}
-                              />
+                              roles={roles}
+                            />
                             <Button 
                               variant="destructive" 
                               size="sm" 

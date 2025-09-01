@@ -9,6 +9,8 @@ use App\Http\Requests\Admin\User\UpdateUserRequest;
 
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use Illuminate\Support\Facades\Hash;
+use Spatie\Permission\Models\Role;
 
 class UserController extends Controller
 {
@@ -17,9 +19,12 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::all();
+        $users = User::with('roles')->get();
+        $roles = Role::all();
+        
         return Inertia::render('admin/users/index', [
             'users' => $users,
+            'roles' => $roles,
         ]);
     }
 
@@ -36,9 +41,20 @@ class UserController extends Controller
      */
     public function store(StoreUserRequest $request)
     {
-        User::create($request->validated());
+        $validatedData = $request->validated();
+        
+        // Hash the password before creating user
+        $validatedData['password'] = Hash::make($validatedData['password']);
+        
+        $user = User::create($validatedData);
+        
+        // Assign role if provided
+        if (!empty($validatedData['role'])) {
+            $user->assignRole($validatedData['role']);
+        }
 
-        return redirect()->route('admin.users.index');
+        return redirect()->route('admin.users.index')
+            ->with('success', 'User created successfully.');
     }
 
     /**
@@ -62,15 +78,25 @@ class UserController extends Controller
      */
     public function update(UpdateUserRequest $request, $id)
     {
+        $user = User::findOrFail($id);
         $validatedData = $request->validated();
         
         // Remove password from data if it's empty/null to keep existing password
         if (empty($validatedData['password'])) {
             unset($validatedData['password']);
+        } else {
+            $validatedData['password'] = Hash::make($validatedData['password']);
         }
         
-        User::find($id)->update($validatedData);
-        return redirect()->route('admin.users.index');
+        $user->update($validatedData);
+        
+        // Sync role if provided
+        if (isset($validatedData['role'])) {
+            $user->syncRoles([$validatedData['role']]);
+        }
+
+        return redirect()->route('admin.users.index')
+            ->with('success', 'User updated successfully.');
     }
 
     /**

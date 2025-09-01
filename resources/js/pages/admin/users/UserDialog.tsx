@@ -28,10 +28,11 @@ type UserForm = {
 interface Props {
   trigger: React.ReactNode;
   user?: User;
+  roles: any[];
   onClose?: () => void;
 }
 
-export default function UserDialog({ trigger, user, onClose }: Props) {
+export default function UserDialog({ trigger, user, roles, onClose }: Props) {
   const isEdit = !!user;
 
   const userName = useRef<HTMLInputElement>(null)
@@ -39,7 +40,7 @@ export default function UserDialog({ trigger, user, onClose }: Props) {
     name: user?.name ?? "",
     email: user?.email ?? "",
     password: "",
-    role: user?.role ?? ""
+    role: user?.roles?.[0]?.name ?? ""
   });
   const [open, setOpen] = useState(false);
 
@@ -160,8 +161,11 @@ export default function UserDialog({ trigger, user, onClose }: Props) {
                 <SelectValue placeholder="Select a role" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="user">User</SelectItem>
-                <SelectItem value="admin">Admin</SelectItem>
+                {roles.map((role) => (
+                  <SelectItem key={role.id} value={role.name}>
+                    {role.name}
+                  </SelectItem>
+                ))}
               </SelectContent>
             </Select>
             <InputError message={errors.role} className={errors.role ? 'block' : "hidden"} />

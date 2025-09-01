@@ -14,7 +14,7 @@ class UpdateUserRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return auth()->check() && auth()->user()->hasRole('admin');
+        return auth()->check();
     }
 
     /**
@@ -44,7 +44,7 @@ class UpdateUserRequest extends FormRequest
             'role' => [
                 'required',
                 'string',
-                'in:admin,user'
+                'exists:roles,name'
             ]
         ];
     }
