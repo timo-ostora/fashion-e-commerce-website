@@ -1,4 +1,4 @@
-import AppLayout from '@/layouts/app-layout';
+import AppLayout from '@/layouts/admin-layout';
 import { type BreadcrumbItem , type Role, type Permission } from '@/types';
 import { Head, router } from '@inertiajs/react';
 import { toast } from 'sonner';
