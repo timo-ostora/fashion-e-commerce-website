@@ -9,6 +9,7 @@ use Inertia\Inertia;
 // })->name('home');
 
 Route::get('/', [GuestController::class, 'index'])->name('home');
+Route::get('/categories', [GuestController::class, 'categories'])->name('categories');
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('dashboard', fn () => Inertia::render('dashboard'))->name('dashboard');
