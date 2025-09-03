@@ -7,9 +7,13 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
 // Admin routes
-Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(function () {
+Route::middleware(['auth', 'verified', 'permission:admin.access'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/', fn () => Inertia::render('admin/index'))->name('index');
-    Route::resource('users', UserController::class);
-    Route::resource('categories', CategoryController::class);
-    Route::Resource('roles', RoleController::class);
+    
+    Route::resource('users', UserController::class)
+        ->middleware('permission:users.view');
+    Route::resource('categories', CategoryController::class)
+        ->middleware('permission:categories.view');
+    Route::resource('roles', RoleController::class)
+        ->middleware('permission:roles.view');
 });

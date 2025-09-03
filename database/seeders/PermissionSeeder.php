@@ -14,6 +14,7 @@ class PermissionSeeder extends Seeder
     public function run(): void
     {
         $permissions = [
+            'admin.access',
             'users.view',
             'users.edit',
             'users.delete',
