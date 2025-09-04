@@ -110,6 +110,7 @@ export default function Index({ categories}: { categories: Category[] }) {
                       <TableHead>Id</TableHead>
                       <TableHead>Name</TableHead>
                       <TableHead>Slug</TableHead>
+                      <TableHead>Product Count</TableHead>
                       <TableHead>Actions</TableHead>
                     </TableRow>
                   </TableHeader>
@@ -119,6 +120,11 @@ export default function Index({ categories}: { categories: Category[] }) {
                         <TableCell>{category.id}</TableCell>
                         <TableCell>{category.name}</TableCell>
                         <TableCell>{category.slug}</TableCell>
+                        <TableCell>
+                          <span className="text-sm text-muted-foreground">
+                             {category.products_count || 0} products
+                           </span>
+                        </TableCell>
                         <TableCell>
                           <div className='flex items-center space-x-2'>
                             

@@ -47,6 +47,7 @@ export interface Category {
     id: number;
     name: string;
     slug: string;
+    products_count: number;
     created_at: string;
     updated_at: string;
 }
@@ -67,4 +68,19 @@ export interface Role {
     users_count?: number;
     created_at: string;
     updated_at: string;
+}
+
+export interface Product {
+    id: number;
+    name: string;
+    slug: string;
+    price: number;
+    stock: number;
+    description: string;
+    category_id: number;
+    is_active: boolean;
+    created_at: string;
+    updated_at: string;
+    images: any;
+    category ?: Category;
 }

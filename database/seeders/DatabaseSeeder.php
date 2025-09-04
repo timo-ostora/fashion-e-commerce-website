@@ -17,13 +17,23 @@ class DatabaseSeeder extends Seeder
         
         $this->call([
             CategorySeeder::class,
+            ProductSeeder::class,
             PermissionSeeder::class,
-            RoleSeeder::class
+            RoleSeeder::class,
         ]);
 
-        User::factory()->create([
+        // Create user with 'user' role
+        $user = User::factory()->create([
             'name' => 'Test User',
-            'email' => 'user@example.com'
+            'email' => 'user@example.com',
         ]);
+        $user->assignRole('user');
+
+        // Create admin with 'admin' role
+        $admin = User::factory()->create([
+            'name' => 'Admin User',
+            'email' => 'admin@example.com',
+        ]);
+        $admin->assignRole('admin');
     }
 }

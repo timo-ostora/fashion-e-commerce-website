@@ -5,7 +5,7 @@ import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, Sid
 import { dashboard } from '@/routes';
 import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/react';
-import { BookOpen, Users, Folder, LayoutGrid, Flag, LayoutList, RollerCoasterIcon } from 'lucide-react';
+import { BookOpen, Users, Folder, LayoutGrid, Flag, LayoutList, RollerCoasterIcon, BaggageClaimIcon, ListOrdered } from 'lucide-react';
 import AppLogo from './app-logo';
 
 const mainNavItems: NavItem[] = [
@@ -28,7 +28,18 @@ const mainNavItems: NavItem[] = [
         title: 'Categories',
         href: '/admin/categories',
         icon: LayoutList,
-    }, {
+    }, 
+    {
+        title: 'Products',
+        href: '/admin/products',
+        icon: BaggageClaimIcon,
+    },
+    {
+        title: 'Orders',
+        href: '/admin/orders',
+        icon: ListOrdered,
+    },
+    {
         title: 'Roles',
         href: '/admin/roles',
         icon: RollerCoasterIcon

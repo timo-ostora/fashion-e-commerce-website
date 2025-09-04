@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\RoleController;
+use App\Http\Controllers\Admin\ProductController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -14,6 +15,8 @@ Route::middleware(['auth', 'verified', 'permission:admin.access'])->prefix('admi
         ->middleware('permission:users.view');
     Route::resource('categories', CategoryController::class)
         ->middleware('permission:categories.view');
+    Route::resource('products', ProductController::class)
+        ->middleware('permission:products.view');
     Route::resource('roles', RoleController::class)
         ->middleware('permission:roles.view');
 });
