@@ -19,19 +19,6 @@ import { useForm, router } from "@inertiajs/react";
 import { FormEventHandler, useRef } from "react";
 import { toast } from "sonner";
 
-type ProductForm = {
-  name?: string;
-  slug?: string;
-  price?: number;
-  stock?: number;
-  description?: string;
-  category_id?: number;
-  is_active?: boolean;
-  images: [
-    image: string,
-    is_main: boolean
-  ]
-}
 
 interface Props {
   trigger: React.ReactNode;
@@ -52,7 +39,6 @@ export default function ProductDialog({ trigger, product, categories = [], onClo
     description: product?.description ?? "",
     category_id: product?.category_id ?? undefined,
     is_active: product?.is_active ?? true,
-    images: product?.images ?? []
   });
   const [open, setOpen] = useState(false);
 
@@ -139,25 +125,6 @@ export default function ProductDialog({ trigger, product, categories = [], onClo
 
         <form onSubmit={handleSubmit} className="flex flex-col gap-6">
 
-        <div className="flex space-x-2">
-        {data.images.map((img, index) => (
-                <div key={index}>
-                  <img src={img.image} alt="Preview" style={{ width: 80 }} />
-                  <label>
-                    <input
-                      type="radio"
-                      name="mainImage"
-                      checked={img.is_main}
-                      onChange={() => setImages(images.map((i, idx) => ({
-                        ...i,
-                        is_main: idx === index
-                      })))}
-                    />
-                    Set as main
-                  </label>
-                </div>
-        ))}
-        </div>
           <div className="grid grid-cols-2 gap-4">
             <div className="grid gap-2">
               <Label htmlFor="name">Name <span className="text-destructive">*</span></Label>
